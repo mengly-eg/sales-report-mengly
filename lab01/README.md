@@ -12,6 +12,7 @@ Team: sales-report-mengly · Members: Mengly Eang (mengly-eg)
 | `lab01/design-review.md` | Package cohesion, afferent/efferent coupling metrics, instability arithmetic, SDP rationale, and sealed vs. open evaluation | Mengly Eang |
 | `lab01/adr/0001-architecture-style-release-1.md` | ADR-0001: Modular monolith batch architecture for Release 1 | Mengly Eang |
 | `lab01/adr/0002-branch-to-head-office-data-flow.md` | ADR-0002: Daily SFTP push data flow, partial-failure policy, and idempotent re-runs | Mengly Eang |
+| `lab01/atam.md` | ATAM-style trade-off analysis of three candidate architectures (Challenge) | Mengly Eang |
 | `pom.xml`, `src/**`, `tools/SampleData.java` | Core Maven project, domain records, CSV parser, renderers, observer loader, and unit test suites | Mengly Eang |
 
 ## Inputs reused from earlier labs
@@ -20,4 +21,4 @@ None (first lab).
 ## Change log
 | Date | Lab | Change | Commit or tag |
 |:---|:---|:---|:---|
-| 2026-10-18 | Lab-01 | Project created: model, parser, renderers, loader; C4 diagrams; 2 ADRs | `lab-01` |
+| 2026-10-18 | Lab-01 | Project created: model, parser, renderers, loader; C4 diagrams; 2 ADRs; ATAM analysis | `lab-01` |
