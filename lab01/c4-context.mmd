@@ -1,0 +1,19 @@
+flowchart TB
+  analyst["Analyst<br/>[Person]<br/>Head-office financial analyst"]:::person
+  manager["Branch Manager<br/>[Person]<br/>Store manager (PNH, REP, BTB)"]:::person
+  director["Finance Director<br/>[Person]<br/>Executive stakeholder"]:::person
+
+  sys["Monthly Sales Report System<br/>[Software System]<br/>Ingests branch POS sales, validates transactions, and generates consolidated monthly reports"]:::system
+
+  pos["Branch POS Systems<br/>[External System, x3]<br/>Retail point-of-sale registers"]:::external
+  mail["Corporate E-mail Service<br/>[External System]<br/>SMTP relay provider"]:::external
+
+  pos -- "Uploads daily CSV files [SFTP]" --> sys
+  analyst -- "Views and exports chain reports [HTTPS / GUI]" --> sys
+  manager -- "Views own branch report [HTTPS]" --> sys
+  sys -- "Sends report-ready e-mail [SMTP]" --> mail
+  mail -- "Delivers notification e-mail" --> director
+
+  classDef person fill:#08427b,color:#ffffff,stroke:#052e56
+  classDef system fill:#1168bd,color:#ffffff,stroke:#0b4884
+  classDef external fill:#8a8a8a,color:#ffffff,stroke:#6b6b6b

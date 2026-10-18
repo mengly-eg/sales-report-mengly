@@ -1,0 +1,36 @@
+flowchart TB
+  analyst["Analyst<br/>[Person]<br/>Head-office financial analyst"]:::person
+  manager["Branch Manager<br/>[Person]<br/>Store manager (PNH, REP, BTB)"]:::person
+  director["Finance Director<br/>[Person]<br/>Executive stakeholder"]:::person
+
+  pos["Branch POS Systems<br/>[External System, x3]<br/>Retail point-of-sale registers"]:::external
+  mail["Corporate E-mail Service<br/>[External System]<br/>SMTP relay provider"]:::external
+
+  subgraph boundary["Monthly Sales Report System"]
+    landing["Landing Zone<br/>[Container: Local File System / SFTP]<br/>Stores incoming daily CSV files from branches"]:::container
+    ingest["Ingest Job<br/>[Container: Java 25 CLI / Cron]<br/>Validates CSV rows, handles anomalies, and cleanses data"]:::container
+    store["Staging & Data Store<br/>[Container: File System / JSON Storage]<br/>Holds cleansed sales transactions and branch summaries"]:::container
+    batch["Report Batch Engine<br/>[Container: Java 25 Batch Process]<br/>Calculates chain aggregations and renders reports via Strategy"]:::container
+    output["Report Artifact Store<br/>[Container: Shared Storage / File System]<br/>Stores finalized PDF, Excel, and HTML reports"]:::container
+    desktop["Desktop Viewer<br/>[Container: JavaFX 25 Desktop App]<br/>Interactive UI for analysts to inspect and export reports"]:::container
+    web["Web Report Portal<br/>[Container: Java / Embedded HTTP Server]<br/>Role-restricted web application for branch managers"]:::container
+  end
+
+  pos -- "Uploads daily CSV files [SFTP]" --> landing
+  landing -- "Reads raw CSV files [File I/O]" --> ingest
+  ingest -- "Writes validated records & anomalies [File I/O]" --> store
+  store -- "Streams cleansed records [File I/O]" --> batch
+  batch -- "Writes rendered report artifacts [File I/O]" --> output
+  batch -- "Dispatches completion notification [SMTP]" --> mail
+  mail -- "Delivers notification e-mail" --> director
+
+  analyst -- "Inspects and exports reports [Local / Desktop]" --> desktop
+  desktop -- "Reads report artifacts [File I/O]" --> output
+
+  manager -- "Inspects own branch sales [HTTPS]" --> web
+  web -- "Queries scoped branch reports [File I/O]" --> output
+
+  style boundary stroke:#0b4884,stroke-width:2px,stroke-dasharray: 5 5,fill:#f8f9fa
+  classDef person fill:#08427b,color:#ffffff,stroke:#052e56
+  classDef container fill:#438dd5,color:#ffffff,stroke:#2e6295
+  classDef external fill:#8a8a8a,color:#ffffff,stroke:#6b6b6b
